@@ -46,3 +46,7 @@ create table tbl_agenda(
 	data_cirurgia varchar(10)not null,
     status_cirurgia enum("Agendado", "Concluido", "Cancelado")
 );
+
+alter table tbl_salas add constraint fk_esp
+foreign key (id_esp)
+references tbl_especialidade (id_esp);
