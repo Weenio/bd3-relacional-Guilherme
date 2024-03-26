@@ -136,3 +136,71 @@ on tp.id_paciente = ta.id_paciente;
 #####################################
 
 select * from vw_agenda_completa;
+
+######Criando Store Procedures#######
+
+#Procedure sem parametros
+
+delimiter $
+
+create procedure listagem_agenda1()
+begin
+
+select
+ta.data_cirurgia, ta.status_cirurgia,
+ts.num_salas,
+tm.nome_medico, tm.cel_medico,
+tp.nome_paciente, tp.cel_paciente, tp.nome_responsavel, tp.tel_responsavel
+from tbl_agenda ta
+inner join tbl_salas ts
+on ta.id_sala = ts.id_salas
+inner join tbl_medico tm
+on ta.id_medico = tm.id_medico
+inner join tbl_paciente tp
+on tp.id_paciente = ta.id_paciente;
+
+end;
+
+$
+
+call listagem_agenda1();
+
+#Procedure com parametros
+
+delimiter $
+
+create procedure listagem_agenda2(in id_medicoPARAM int)
+begin
+
+select
+ta.data_cirurgia, ta.status_cirurgia,
+ts.num_salas,
+tm.nome_medico, tm.cel_medico,
+tp.nome_paciente, tp.cel_paciente, tp.nome_responsavel, tp.tel_responsavel
+from tbl_agenda ta
+inner join tbl_salas ts
+on ta.id_sala = ts.id_salas
+inner join tbl_medico tm
+on ta.id_medico = tm.id_medico
+inner join tbl_paciente tp
+on tp.id_paciente = ta.id_paciente
+
+where ta.id_medico = id_medicoPARAM;
+
+end;
+
+$
+call listagem_agenda2(1);
+
+#Procedure de contagem
+
+create procedure contagem_paciente(out total_pacientes int)
+begin
+
+select count(id_paciente) into total_pacientes from tbl_paciente;
+
+end;
+
+$
+
+call contagem_paciente(@total_pacientes);
